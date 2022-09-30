@@ -1,7 +1,8 @@
-import Interceptor from "./core/interceptor";
-import Runner from "./core/Runner";
-import Block from "./core/Block";
-import getMatcher from "./utils/getMatcher";
+import Interceptor from './core/interceptor';
+import Runner from './core/Runner';
+import Block from './core/Block';
+import getMatcher from './utils/getMatcher';
+const interceptor = new Interceptor();
 /**
  * @callback listenCallback
  * @param {object} result 接收到的消息
@@ -14,12 +15,12 @@ export default class Wsiox {
    */
   constructor(url, wsOptions) {
     this._optioHandler(url, wsOptions);
-    this.interceptor = new Interceptor();
+    this.interceptor = interceptor;
     this.websockt = new WebSocket(url, wsOptions);
     this.websockt.onmessage = this._MsgHandler;
     this.websockt.onopen = this._OpenHandler;
     this.runner = new Runner();
-    this.blockor = new Block();
+    this.blocker = new Block();
   }
   /**
    * 发送消息
@@ -30,7 +31,7 @@ export default class Wsiox {
    * @param {string} responseOptions.isReg 是否使用正则匹配消息
    */
   async request(requestOptions, responseOptions) {
-    await this.blockor.ready();
+    await this.blocker.ready();
     try {
       return new Promise((resolve, reject) => {
         const param = this.interceptor.request(requestOptions);
@@ -38,15 +39,15 @@ export default class Wsiox {
           remove();
           const { code } = res;
           if (code != 200) {
-            reject(res)
+            reject(res);
           } else {
-            resolve(this.interceptor.response(res))
+            resolve(this.interceptor.response(res));
           }
-        })
+        });
         this.websockt.send(param);
-      })
+      });
     } catch (e) {
-      throw Error('request error', e)
+      throw Error('request error', e);
     }
   }
   /**
@@ -59,7 +60,7 @@ export default class Wsiox {
    */
   on(options, callback) {
     const { condition, key = 'url', isReg = false } = options;
-    return this.runner.push(getMatcher(condition, key, isReg, callback))
+    return this.runner.push(getMatcher(condition, key, isReg, callback));
   }
   /**
    * @description websocket.close
@@ -68,7 +69,7 @@ export default class Wsiox {
     try {
       return this.websockt.close();
     } catch (e) {
-      console.error("clsoe websocket error", e);
+      console.error('clsoe websocket error', e);
       return false;
     }
   }
@@ -83,7 +84,7 @@ export default class Wsiox {
    * @private
    */
   _OpenHandler() {
-    this.blockor.setReady();
+    this.blocker.setReady();
   }
   /**
    * @param {string} url websocket的地址
@@ -91,7 +92,7 @@ export default class Wsiox {
    */
   _optioHandler(url, options) {
     if (!url) {
-      throw Error('url error, url is', url)
+      throw Error('url error, url is', url);
     }
   }
 }
