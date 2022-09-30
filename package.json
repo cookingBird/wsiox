@@ -1,0 +1,11 @@
+{
+  "name": "wsiox",
+  "version": "1.0.0",
+  "description": "websocket request lib, like axios",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cookingBird",
+  "license": "MIT"
+}
