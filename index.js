@@ -11,14 +11,14 @@ export default class Wsiox {
   /**
    * @constructor
    * @param {string} url websocket的地址
-   * @param {onject} wsOptions websocket的option选项
+   * @param {object} wsOptions websocket的option选项
    */
   constructor(url, wsOptions) {
-    this._optioHandler(url, wsOptions);
+    this._optionHandler(url, wsOptions);
     this.interceptor = interceptor;
-    this.websockt = new WebSocket(url, wsOptions);
-    this.websockt.onmessage = this._MsgHandler;
-    this.websockt.onopen = this._OpenHandler;
+    this.websocket = new WebSocket(url, wsOptions);
+    this.websocket.onmessage = this._MsgHandler;
+    this.websocket.onopen = this._OpenHandler;
     this.runner = new Runner();
     this.blocker = new Block();
   }
@@ -44,7 +44,7 @@ export default class Wsiox {
             resolve(this.interceptor.response(res));
           }
         });
-        this.websockt.send(param);
+        this.websocket.send(param);
       });
     } catch (e) {
       throw Error('request error', e);
@@ -65,11 +65,11 @@ export default class Wsiox {
   /**
    * @description websocket.close
    */
-  clsoe() {
+  close() {
     try {
-      return this.websockt.close();
+      return this.websocket.close();
     } catch (e) {
-      console.error('clsoe websocket error', e);
+      console.error('close websocket error', e);
       return false;
     }
   }
@@ -88,9 +88,9 @@ export default class Wsiox {
   }
   /**
    * @param {string} url websocket的地址
-   * @param {onject} wsOptions websocket的option选项
+   * @param {object} wsOptions websocket的option选项
    */
-  _optioHandler(url, options) {
+  _optionHandler(url, options) {
     if (!url) {
       throw Error('url error, url is', url);
     }
