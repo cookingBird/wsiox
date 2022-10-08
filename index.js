@@ -21,6 +21,7 @@ export default class Wsiox {
     this.websocket.onopen = this._OpenHandler;
     this.runner = new Runner();
     this.blocker = new Block();
+    this.default = {};
   }
   /**
    * 发送消息
@@ -37,12 +38,7 @@ export default class Wsiox {
         const param = this.interceptor.request(requestOptions);
         const remove = this.on(responseOptions, (res) => {
           remove();
-          const { code } = res;
-          if (code != 200) {
-            reject(res);
-          } else {
-            resolve(this.interceptor.response(res));
-          }
+          resolve(this.interceptor.response(res));
         });
         this.websocket.send(param);
       });
@@ -59,8 +55,10 @@ export default class Wsiox {
    * @param {listenCallback} callback 接收到消息的回调函数
    */
   on(options, callback) {
-    const { condition, key = 'url', isReg = false } = options;
-    return this.runner.push(getMatcher(condition, key, isReg, callback));
+    const { condition, key, isReg = false } = options;
+    return this.runner.push(
+      getMatcher(condition, key || this.default.key || 'url', isReg, callback)
+    );
   }
   /**
    * @description websocket.close
