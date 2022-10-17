@@ -6,11 +6,12 @@
  * @param { function } callback 匹配成功的回调函数；
  * @returns 
  */
-export default function (matchCondition, key, isReg, callback) {
+export default function (matchCondition,key,callback) {
   return (res) => {
     try {
       const _key = res[key];
-      if (!_key) { console.warn("message matcher don't exist, matchCondition is ", matchCondition) }
+      const isReg = Object.prototype.toString.call(matchCondition) === '[object RegExp]'
+      if (!_key) { console.warn("message matcher don't exist, matchCondition is ",matchCondition) }
       if (!isReg) {
         if (_key == matchCondition) {
           callback(res)
@@ -21,7 +22,7 @@ export default function (matchCondition, key, isReg, callback) {
         }
       }
     } catch (e) {
-      console.error('onmessage error!', e)
+      console.error('onmessage error!',e)
     }
   }
 }

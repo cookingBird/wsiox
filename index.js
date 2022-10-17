@@ -13,10 +13,10 @@ export default class Wsiox {
    * @param {string} url websocket的地址
    * @param {object} wsOptions websocket的option选项
    */
-  constructor(url, wsOptions) {
-    this._optionHandler(url, wsOptions);
+  constructor(url,wsOptions) {
+    this._optionHandler(url,wsOptions);
     this.interceptor = interceptor;
-    this.websocket = new WebSocket(url, wsOptions);
+    this.websocket = new WebSocket(url,wsOptions);
     this.websocket.onmessage = this._MsgHandler;
     this.websocket.onopen = this._OpenHandler;
     this.runner = new Runner();
@@ -31,43 +31,42 @@ export default class Wsiox {
    * @param {string} responseOptions.key 消息的关键字段
    * @param {string} responseOptions.isReg 是否使用正则匹配消息
    */
-  async request(requestOptions, responseOptions) {
+  async request (requestOptions,responseOptions) {
     await this.blocker.ready();
     try {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve,reject) => {
         const param = this.interceptor.request(requestOptions);
-        const remove = this.on(responseOptions, (res) => {
+        const remove = this.on(responseOptions,(res) => {
           remove();
           resolve(this.interceptor.response(res));
         });
         this.websocket.send(param);
       });
     } catch (e) {
-      throw Error('request error', e);
+      throw Error('request error',e);
     }
   }
   /**
    * 监听消息
    * @param {object} options 监听消息的options
-   * @param {string} options.condition 消息的匹配字符串
+   * @param {string|regexp} options.condition 消息的匹配字符串
    * @param {string} options.key 消息的关键字段
-   * @param {string} options.isReg 是否使用正则匹配消息
    * @param {listenCallback} callback 接收到消息的回调函数
    */
-  on(options, callback) {
-    const { condition, key, isReg = false } = options;
+  on (options,callback) {
+    const { condition,key } = options;
     return this.runner.push(
-      getMatcher(condition, key || this.default.key || 'url', isReg, callback)
+      getMatcher(condition,key || this.default.key || 'url',callback)
     );
   }
   /**
    * @description websocket.close
    */
-  close() {
+  close () {
     try {
       return this.websocket.close();
     } catch (e) {
-      console.error('close websocket error', e);
+      console.error('close websocket error',e);
       return false;
     }
   }
@@ -75,22 +74,22 @@ export default class Wsiox {
    * @private
    * @param {object} res 相应的消息
    */
-  _MsgHandler(res) {
+  _MsgHandler (res) {
     this.runner.run(res);
   }
   /**
    * @private
    */
-  _OpenHandler() {
+  _OpenHandler () {
     this.blocker.setReady();
   }
   /**
    * @param {string} url websocket的地址
    * @param {object} wsOptions websocket的option选项
    */
-  _optionHandler(url, options) {
+  _optionHandler (url,options) {
     if (!url) {
-      throw Error('url error, url is', url);
+      throw Error('url error, url is',url);
     }
   }
 }
