@@ -8,6 +8,9 @@ const interceptor = new Interceptor();
  * @param {object} result 接收到的消息
  */
 export default class Wsiox {
+  default = {
+    key: 'path'
+  }
   /**
    * @constructor
    * @param {string} url websocket的地址
@@ -21,7 +24,6 @@ export default class Wsiox {
     this.websocket.onopen = this._OpenHandler;
     this.runner = new Runner();
     this.blocker = new Block();
-    this.default = {};
   }
   /**
    * 发送消息
