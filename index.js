@@ -22,6 +22,11 @@ export default class Wsiox {
     this.websocket = new WebSocket(url,options);
     this.websocket.onmessage = (res) => { this._MsgHandler(res) };
     this.websocket.onopen = (res) => { this._OpenHandler() };
+    const contentType = options.contentType || 'json';
+    if (contentType === 'json') {
+      this.interceptor.request.use((data) => JSON.stringify(data));
+      this.interceptor.response.use((res) => JSON.parse(res));
+    }
   }
   /**
    * 发送消息
