@@ -8,7 +8,7 @@
  */
 export default function (condition,key,callback) {
   const _toString = Object.prototype.toString;
-  if (!_key || !condition) {
+  if (!key || !condition) {
     console.error("condition is ",condition);
     console.error("key is ",key);
     throw Error('matched failure')

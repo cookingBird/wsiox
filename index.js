@@ -19,7 +19,7 @@ export default class Wsiox {
     this.interceptor = new Interceptor();
     this.runner = new Runner();
     this.blocker = new Block();
-    this.websocket = new WebSocket(url,options);
+    this.websocket = new WebSocket(url,options.ws);
     this.websocket.onmessage = (res) => { this._MsgHandler(res) };
     this.websocket.onopen = (res) => { this._OpenHandler() };
     const contentType = options.contentType || 'json';
