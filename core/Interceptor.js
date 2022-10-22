@@ -1,5 +1,5 @@
-import RequestInterceptor from "./requestInterceptor";
-import ResponseInterceptor from "./responseInterceptor";
+import RequestInterceptor from "./RequestInterceptor";
+import ResponseInterceptor from "./ResponseInterceptor";
 export default class Interceptor {
   constructor() {
     this.request = new RequestInterceptor();

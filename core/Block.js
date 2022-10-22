@@ -1,18 +1,18 @@
 export default class Block {
   constructor() {
-    this.isReady = fasle;
+    this.isReady = false;
     this.queue = [];
   }
-  ready() {
+  ready () {
     if (this.isReady) {
       return Promise.resolve(true);
     } else {
-      return new Promise((resolve, reject) => {
-        this.queue.push(resolve, reject);
+      return new Promise((resolve,reject) => {
+        this.queue.push(resolve,reject);
       })
     }
   }
-  setReady() {
+  setReady () {
     this.isReady = true;
     while (this.queue.length) {
       const _resolve = this.queue.shift();
@@ -20,10 +20,10 @@ export default class Block {
       _resolve();
     }
   }
-  setBlock() {
+  setBlock () {
     this.isReady = false;
   }
-  setReject(){
+  setReject () {
     this.isReady = false;
     while (this.queue.length) {
       const _resolve = this.queue.shift();
