@@ -11,7 +11,7 @@ export default class Wsiox {
    * @param {string} url websocket的地址
    * @param {object} options websocket的option选项
    */
-  constructor(url,options) {
+  constructor(url,options = {}) {
     this._optionHandler(url,options);
     this.default = {
       key: 'path'
