@@ -62,9 +62,7 @@ export default class Wsiox {
    * @param {listenCallback} callback 接收到消息的回调函数
    */
   on (options,callback) {
-    const key = options.key ? options.key : this.default.key;
-    const condition = options.condition || options[key];
-    const cb = getMatcher(condition,key,callback);
+    const cb = getMatcher(options,this.default.key,callback);
     return this.runner.push(cb);
   }
   /**
