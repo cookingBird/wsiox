@@ -12,10 +12,8 @@ export default function (options,defaultKey,callback) {
   const isFunc = (condition) => _toString.call(condition) === '[object Function]';
   const isString = (condition) => _toString.call(condition) === '[object String]';
   const isObject = (condition) => _toString.call(condition) === '[object Object]';
-  if (!key || !condition) {
-    console.error("condition is ",condition);
-    console.error("key is ",key);
-    throw Error('matched failure')
+  if (!defaultKey || !options) {
+    throw Error('create matcher function failure')
   }
   if (isFunc(options)) {
     return async function (res) {
