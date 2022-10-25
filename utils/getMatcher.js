@@ -4,9 +4,10 @@
  * @param {string} defaultKey 要匹配消息的字段； 
  * @param {boolean} isReg 是否以正则的方式匹配；
  * @param { function } callback 匹配成功的回调函数；
+ * @param { function } errorCallback 匹配成功的回调函数；
  * @returns 
  */
-export default function (options,defaultKey,callback) {
+export default function (options,defaultKey,callback,errorCallback) {
   const _toString = Object.prototype.toString;
   const isRegExp = (condition) => _toString.call(condition) === '[object RegExp]';
   const isFunc = (condition) => _toString.call(condition) === '[object Function]';
@@ -17,15 +18,17 @@ export default function (options,defaultKey,callback) {
   }
   if (isFunc(options)) {
     return async function (res) {
-      const result = await res;
       try {
+        const result = await res;
         if (options(result)) {
-          return result
-        } else {
-          return Promise.reject(result)
+          callback(result)
         }
       } catch (e) {
-        throw Error()
+        const result = e;
+        if (options(result)) {
+          errorCallback ? errorCallback(result)
+            : callback?.(result)
+        }
       }
     }
   }
@@ -46,7 +49,12 @@ export default function (options,defaultKey,callback) {
           callback(result)
         }
       } catch (e) {
-        console.error('onmessage error!',e)
+        const result = e;
+        const _key = result[key];
+        if (condition.test(_key)) {
+          errorCallback ? errorCallback(result)
+            : callback?.(result)
+        }
       }
     }
   } else {
@@ -58,7 +66,12 @@ export default function (options,defaultKey,callback) {
           callback(result)
         }
       } catch (e) {
-        console.error('onmessage error!',e)
+        const result = e;
+        const _key = result[key];
+        if (_key === condition) {
+          errorCallback ? errorCallback(result)
+            : callback?.(result)
+        }
       }
     }
   }

@@ -24,8 +24,8 @@ export default class Wsiox {
     this.websocket.onopen = (res) => { this._OpenHandler() };
     const contentType = options.contentType || 'json';
     if (contentType === 'json') {
-      this.interceptor.request.use((data) => JSON.stringify(data));
-      this.interceptor.response.use((res) => JSON.parse(res));
+      this.interceptor.request.use((data) => (JSON.stringify(data)));
+      this.interceptor.response.use((res) => (JSON.parse(res)));
     }
   }
   /**
@@ -38,31 +38,32 @@ export default class Wsiox {
    */
   async request (requestOptions,responseOptions) {
     await this.blocker.ready();
-    try {
-      return new Promise((resolve,reject) => {
-        const remove = this.on(
-          requestOptions,
-          (res) => {
-            remove();
-            resolve(res);
-          }
-        );
-        this._MsgSender(requestOptions);
-      });
-    } catch (e) {
-      throw Error('request error',e);
-    }
+    return new Promise((resolve,reject) => {
+      const remove = this.on(
+        requestOptions,
+        (res) => {
+          remove();
+          resolve(res);
+        },
+        (res) => {
+          remove();
+          reject(res);
+        }
+      );
+      this._MsgSender(requestOptions);
+    });
   }
 
   /**
    * 监听消息
-   * @param {object} options 监听消息的options
-   * @param {string|regexp|options.path} options.condition 消息的匹配条件
+   * @param {object|function} options 监听消息的options
+   * @param {string|regexp} options.condition 消息的匹配条件
    * @param {string|'path'} options.key 匹配条件所在的字段
    * @param {listenCallback} callback 接收到消息的回调函数
+   * @param {listenCallback} errorCallback 接收错误到消息的回调函数
    */
-  on (options,callback) {
-    const cb = getMatcher(options,this.default.key,callback);
+  on (options,callback,errorCallback) {
+    const cb = getMatcher(options,this.default.key,callback,errorCallback);
     return this.runner.push(cb);
   }
   /**
