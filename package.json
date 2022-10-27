@@ -1,6 +1,6 @@
 {
   "name": "wsiox",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "websocket request lib, like axios",
   "main": "index.js",
   "scripts": {
