@@ -1,6 +1,6 @@
 /**
  * 生成满足ws消息的函数
- * @param {object} options 消息匹配条件；满足条件的消息将会被回调函数接收；
+ * @param {object|function} options 消息匹配条件；满足条件的消息将会被回调函数接收；
  * @param {string} defaultKey 要匹配消息的字段； 
  * @param {boolean} isReg 是否以正则的方式匹配；
  * @param { function } callback 匹配成功的回调函数；
@@ -16,6 +16,7 @@ export default function (options,defaultKey,callback,errorCallback) {
   if (!defaultKey || !options) {
     throw Error('create matcher function failure')
   }
+
   if (isFunc(options)) {
     return async function (res) {
       try {
@@ -37,10 +38,25 @@ export default function (options,defaultKey,callback,errorCallback) {
   }
   const key = options.key ? options.key : defaultKey;
   const condition = options.condition || options[key];
-  if (!isRegExp(condition) && !isString(condition)) {
+  if (!isRegExp(condition) && !isString(condition) && !isFunc(condition)) {
     throw Error("wsiox's method on param[0] error, field condition required Reg|String")
   }
-  if (isRegExp(condition)) {
+  if (isFunc(condition)) {
+    return async (res) => {
+      try {
+        const result = await res;
+        if (condition(result)) {
+          callback(result)
+        }
+      } catch (e) {
+        const result = e;
+        if (condition(result)) {
+          errorCallback ? errorCallback(result)
+            : callback?.(result)
+        }
+      }
+    }
+  } else if (isRegExp(condition)) {
     return async (res) => {
       try {
         const result = await res;
