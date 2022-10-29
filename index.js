@@ -15,7 +15,8 @@ export default class Wsiox {
     this._optionHandler(url,options);
     this.default = {
       key: 'path'
-    }
+    };
+    this.options = options;
     this.interceptor = new Interceptor();
     this.runner = new Runner();
     this.blocker = new Block();
@@ -24,7 +25,6 @@ export default class Wsiox {
     this.websocket.onopen = (res) => { this._OpenHandler() };
     const contentType = options.contentType || 'json';
     if (contentType === 'json') {
-      this.interceptor.request.use((data) => (JSON.stringify(data)));
       this.interceptor.response.use((res) => (JSON.parse(res)));
     }
   }
@@ -93,7 +93,10 @@ export default class Wsiox {
    * @param {object} res 相应的消息
    */
   _MsgSender (data) {
-    this.websocket.send(this.interceptor.request.run(data));
+    const msg = this.options.contentType === 'json'
+      ? JSON.stringify(this.interceptor.request.run(data))
+      : this.interceptor.request.run(data);
+    this.websocket.send(msg);
   }
   /**
    * @private
