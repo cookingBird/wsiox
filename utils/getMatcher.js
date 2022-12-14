@@ -26,7 +26,7 @@ export default function (options, defaultKey, callback, errorCallback) {
         }
       } catch (e) {
         console.error(e);
-        errorCallback ? errorCallback(e) : callback?.(e);
+        errorCallback && errorCallback(e);
       }
     };
   }
@@ -47,7 +47,7 @@ export default function (options, defaultKey, callback, errorCallback) {
         }
       } catch (e) {
         console.error(e);
-        errorCallback ? errorCallback(e) : callback?.(e);
+        errorCallback && errorCallback(e);
       }
     };
   } else if (isRegExp(condition)) {
@@ -60,7 +60,7 @@ export default function (options, defaultKey, callback, errorCallback) {
         }
       } catch (e) {
         console.error(e);
-        errorCallback ? errorCallback(e) : callback?.(e);
+        errorCallback && errorCallback(e);
       }
     };
   } else {
@@ -73,7 +73,7 @@ export default function (options, defaultKey, callback, errorCallback) {
         }
       } catch (e) {
         console.error(e);
-        errorCallback ? errorCallback(e) : callback?.(e);
+        errorCallback && errorCallback(e);
       }
     };
   }
