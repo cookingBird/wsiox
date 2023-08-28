@@ -17,12 +17,11 @@ export type ReceiveOptions<R> = {
 };
 
 export type JudgeCb<R> = (data: R) => boolean;
-export type RequestOptions = unknown;
 export type GenericFunc<P, R> = (data: P) => R;
 
 class Wsiox {
   constructor(url: string | URL, options: WsioxOptions);
-  request<R, E>(requestOps: RequestOptions): Promise<R, E>;
+  request<R, E>(requestOps: unknown): Promise<R, E>;
   on<R, E>(
     receiveOps?: ReceiveOptions<R> | JudgeCb<R>,
     successCb: GenericFunc<R, void>,
