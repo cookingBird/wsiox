@@ -1,13 +1,14 @@
 {
   "name": "wsiox",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "websocket request lib, like axios",
-  "main": "index.js",
+  "main": "dist/Wsiox.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": " webpack --config webpack.config.prod.js",
     "dev": " webpack --config webpack.config.dev.js",
-    "prepublish": "npm run build"
+    "patch:pub": "npm version patch && npm run build && npm publish",
+    "minor:pub": "npm version minor && npm run build && npm publish",
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
