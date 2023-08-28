@@ -2,20 +2,20 @@
   "name": "wsiox",
   "version": "1.5.1",
   "description": "websocket request lib, like axios",
+  "type": "module",
   "main": "dist/Wsiox.min.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": " webpack --config webpack.config.prod.js",
-    "dev": " webpack --config webpack.config.dev.js",
-    "patch:pub": "npm version patch && npm run build && npm publish",
+    "build": "webpack --config webpack.config.prod.js && webpack --config webpack.config.dev.js",
     "minor:pub": "npm version minor && npm run build && npm publish",
+    "patch:pub": "npm version patch && npm run build && npm publish"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "author": "cookingBird",
   "license": "MIT",
-  "typings": "types/index.d.ts",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
