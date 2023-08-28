@@ -33,7 +33,7 @@ export default function (options, defaultKey, callback, errorCallback) {
   if (!isObject(options)) {
     throw Error('wsiox on method param[0] error required Func|Object');
   }
-  const key = options.key ? options.key : defaultKey;
+  const key = options.uniqueKey ? options.uniqueKey : defaultKey;
   const condition = options.condition || options[key];
   if (!isRegExp(condition) && !isString(condition) && !isFunc(condition)) {
     throw Error("wsiox's method on param[0] error, field condition required Reg|String");

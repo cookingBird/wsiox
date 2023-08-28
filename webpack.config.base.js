@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   entry: {
-    Wsiox: path.resolve(__dirname, './index.js'),
+    Wsiox: path.resolve(__dirname, 'src/index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
