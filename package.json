@@ -1,12 +1,12 @@
 {
   "name": "wsiox",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "websocket request lib, like axios",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx webpack --config webpack.config.prod.js",
-    "dev": "npx webpack --config webpack.config.dev.js",
+    "build": " webpack --config webpack.config.prod.js",
+    "dev": " webpack --config webpack.config.dev.js",
     "prepublish": "npm run build"
   },
   "publishConfig": {
