@@ -2,7 +2,7 @@
   "name": "wsiox",
   "version": "1.5.5",
   "description": "websocket request lib, like axios",
-  "main": "dist/Wsiox.min.js",
+  "main": "index.cjs",
   "types": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
